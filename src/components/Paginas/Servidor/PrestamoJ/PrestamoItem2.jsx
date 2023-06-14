@@ -67,7 +67,7 @@ const PrestamoItem2 = ({ prestamo, listPrestamos }) => {
                                     <button type="button" class="btn btn-outline-primary">Pagar</button>
                                 </Link>
                             ) : (
-                                <Link to={"/prestamoFormCliente"}>
+                                <Link to={"/renobarFrom"}>
                                     <button type="button" class="btn btn-outline-primary">Renovar</button>
                                 </Link>
                             )
