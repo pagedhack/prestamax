@@ -19,7 +19,7 @@ const PrestamoItem2 = ({ prestamo, listPrestamos }) => {
     const handleNom = async () => {
         const data = await (await ClienteServer.getCliente(prestamo.cliente_id)).json();
         setCliente(data.clientes);
-        console.log(data);
+        // console.log(data);
     };
 
     // const handleDelete = async (prestamoId) => {

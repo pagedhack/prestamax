@@ -51,8 +51,6 @@ import PrestamoFormCliente from './components/Paginas/Servidor/PrestamoJ/Prestam
 
 //Pagos
 import PagoList from './components/Paginas/Servidor/Pago/PagoList';
-import PagoForm from './components/Paginas/Servidor/Pago/PagoForm';
-
 
 
 function App() {
@@ -114,8 +112,8 @@ function App() {
 
 
             {/* Pagos */}
-            <Route exact path="/pagoList" component={PagoList} />
-            <Route exact path="/pagoForm" component={PagoForm} />
+            <Route exact path="/pagoForm" component={PagoList} />
+            {/* <Route exact path="/pagoForm" component={PagoForm} /> */}
 
 
             {/* default */}

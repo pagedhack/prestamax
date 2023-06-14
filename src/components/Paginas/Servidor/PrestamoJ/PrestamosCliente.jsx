@@ -12,20 +12,20 @@ import * as PrestamoServer from "./PrestamoServer";
 const cookies = new Cookies();
 
 const PrestamosCliente = () => {
-  const [prestamos, setPrestamos] = useState([]);
-  const clienteId = cookies.get('id');
+    const [prestamos, setPrestamos] = useState([]);
+    const clienteId = cookies.get('id');
 
-  const listPrestamos = async () => {
-    try {
-      const res = await PrestamoServer.listPrestamos();
-      const data = await res.json();
-      const prestamosCliente = data.prestamos.filter(prestamo => prestamo.cliente_id === parseInt(clienteId));
-      console.log(prestamosCliente);
-      setPrestamos(prestamosCliente);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    const listPrestamos = async () => {
+      try {
+        const res = await PrestamoServer.listPrestamos();
+        const data = await res.json();
+        const prestamosCliente = data.prestamos.filter(prestamo => prestamo.cliente_id === parseInt(clienteId));
+        // console.log(prestamosCliente);
+        setPrestamos(prestamosCliente);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   useEffect(() => {
     listPrestamos();

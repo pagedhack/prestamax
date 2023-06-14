@@ -9,18 +9,18 @@ export const getPago = async (pagoId) => {
 };
 
 
-export const registerPago= async (newPago) => {
-    return await fetch(API_URL,{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/jason'
+export const registerPago = async (newPago) => {
+    return await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/jason'
         },
-        body:JSON.stringify({
-            "status":String(newPago.status).trim(),
-            "monto":String(newPago.monto).trim(),
-            "pagos":String(newPago.pagos).trim(),
-            "adeudo":String(newPago.adeudo).trim(),
-            "cliente_id":String(newPago.cliente_id).trim(),
+        body: JSON.stringify({
+            "monto": String(newPago.monto).trim(),
+            "tarjeta": String(newPago.tarjeta).trim(),
+            "fecha": String(newPago.fecha).trim(),
+            "prestamo_id": String(newPago.prestamo_id).trim(),
+            "cliente_id": String(newPago.cliente_id).trim(),
         })
     });
 };
@@ -42,7 +42,7 @@ export const updatePago = async (pagoId, updatedPago) => {
 };
 
 export const deletePago = async (pagoId) => {
-    return await fetch (`${API_URL}/${pagoId}`, {
+    return await fetch(`${API_URL}/${pagoId}`, {
         method: 'DELETE'
     });
 };
