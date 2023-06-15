@@ -11,7 +11,7 @@ export const getPrestamo = async (prestamoId) => {
 
 export const registerPrestamo= async (newPrestamo) => {
     return await fetch(API_URL,{
-        method:'POST',
+        method: 'POST',
         headers:{
             'Content-Type':'application/jason'
         },

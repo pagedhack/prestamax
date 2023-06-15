@@ -25,10 +25,10 @@ const PagoForm = ({ pago, listPagos }) => {
 
   //registar el pago
   const initialStatePago = { id: 0, monto: "", tarjeta: "", fecha: "", prestamo_id: parseInt(pago.id), cliente_id: parseInt(pago.cliente_id) };
-  // const initialState = { id: 0, status: "Activo", monto: "", pagos: "", adeudo: "", cliente_id: parseInt(cookies.get('id')) };
+  const initialState = { id: 0, status: "Activo", monto: "", pagos: "", adeudo: "", cliente_id: parseInt(cookies.get('id')) };
 
   const [pagare, setPagare] = useState(initialStatePago);
-  // const [prestamo, setPrestamo] = useState(initialState);
+  const [prestamo, setPrestamo] = useState(initialState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,12 +52,33 @@ const PagoForm = ({ pago, listPagos }) => {
     }
   }
 
+
   const cambio = (e) => {
     setPagare({ ...pagare, [e.target.monto]: e.target.value });
   }
 
-  console.log(pagare);
+  //console.log(prestamo);
 
+  const getPrestamo = async (prestamoId) => {
+    try {
+      const res = await PrestamoServer.getPrestamo(prestamoId);
+      const data = await res.json();
+      console.log(data);
+      const { status, monto, pagos, adeudo, cliente_id } = data.prestamos;
+      setPrestamo({ status, monto, pagos, adeudo, cliente_id });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (params.id) {
+      getPrestamo(params.id);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  console.log(params.id)
   //tarjeta de 16 dijitos
   const [inputValue, setInputValue] = useState('');
   const handleInputChange = (event) => {
@@ -89,7 +110,7 @@ const PagoForm = ({ pago, listPagos }) => {
     return `${year}-${month}-${day}`;
   };
 
-  console.log(pago);
+  //console.log(pago);
 
   return (
     <>
@@ -107,7 +128,8 @@ const PagoForm = ({ pago, listPagos }) => {
                   className="form-control"
                   max={pago.adeudo}
                   required
-                  onChange={cambio}
+                  //onChange={cambio}
+                  value={pagare.monto} onChange={(e) => setPagare({...pagare, monto: e.target.value})} 
                 />
               </div>
 
@@ -121,7 +143,8 @@ const PagoForm = ({ pago, listPagos }) => {
                   minLength={16}
                   maxLength={16}
                   required
-                  onChange={cambio}
+                  //onChange={cambio}
+                  value={pagare.tarjeta} onChange={(e) => setPagare({...pagare, tarjeta: e.target.value})}
                 />
               </div>
 
@@ -136,7 +159,8 @@ const PagoForm = ({ pago, listPagos }) => {
                   // disabled
                   // value={selectedDate || getCurrentDate()}
                   // onChange={handleDateChange}
-                  onChange={cambio}
+                  //onChange={cambio}
+                  value={pagare.fecha} onChange={(e) => setPagare({...pagare, fecha: e.target.value})}
                 />
               </div>
 
