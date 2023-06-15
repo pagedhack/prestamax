@@ -25,38 +25,66 @@ const PagoForm = ({ pago, listPagos }) => {
 
   //registar el pago
   const initialStatePago = { id: 0, monto: "", tarjeta: "", fecha: "", prestamo_id: parseInt(pago.id), cliente_id: parseInt(pago.cliente_id) };
-  // const initialState = { id: 0, status: "Activo", monto: "", pagos: "", adeudo: "", cliente_id: parseInt(cookies.get('id')) };
+  const initialState = { id: 0, status: "Activo", monto: "", pagos: "", adeudo: "", cliente_id: parseInt(cookies.get('id')) };
 
   const [pagare, setPagare] = useState(initialStatePago);
-  // const [prestamo, setPrestamo] = useState(initialState);
+  const [prestamo, setPrestamo] = useState(initialState);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       let pag;
-
+      const res = await PrestamoServer.listPrestamos();
+      const data = await res.json();
+      console.log(data);
+  
       pag = await PagoServer.registerPago(pagare);
       const dato = await pag.json();
       if (dato.message === "Success") {
         setPagare(initialStatePago);
         swal.fire("Success", "Pago registrado correctamente");
+        
+        // Subtract pago.monto from adeudo
+        const updatedAdeudo = parseInt(pago.adeudo) - parseInt(pagare.monto);
+        setPrestamo({ ...prestamo, adeudo: updatedAdeudo.toString() });
       } else {
         swal.fire("Error", "No se pudo Realizar El Pago");
         history.push("/");
       }
-
+  
       history.push("/prestamosCliente")
     } catch (error) {
       swal.fire("Error", "Error con el sistema");
       history.push("/prestamosCliente");
     }
   }
+  
+
 
   const cambio = (e) => {
     setPagare({ ...pagare, [e.target.monto]: e.target.value });
   }
 
-  console.log(pagare);
+  //console.log(prestamo);
+
+  const getPrestamo = async (prestamoId) => {
+    try {
+      const res = await PrestamoServer.getPrestamo(prestamoId);
+      const data = await res.json();
+      console.log(data);
+      const { status, monto, pagos, adeudo, cliente_id } = data.prestamos;
+      setPrestamo({ status, monto, pagos, adeudo, cliente_id });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (params.id) {
+      getPrestamo(params.id);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   //tarjeta de 16 dijitos
   const [inputValue, setInputValue] = useState('');
@@ -89,7 +117,7 @@ const PagoForm = ({ pago, listPagos }) => {
     return `${year}-${month}-${day}`;
   };
 
-  console.log(pago);
+  //console.log(pago);
 
   return (
     <>
@@ -107,7 +135,8 @@ const PagoForm = ({ pago, listPagos }) => {
                   className="form-control"
                   max={pago.adeudo}
                   required
-                  onChange={cambio}
+                  //onChange={cambio}
+                  value={pagare.monto} onChange={(e) => setPagare({...pagare, monto: e.target.value})} 
                 />
               </div>
 
@@ -121,7 +150,8 @@ const PagoForm = ({ pago, listPagos }) => {
                   minLength={16}
                   maxLength={16}
                   required
-                  onChange={cambio}
+                  //onChange={cambio}
+                  value={pagare.tarjeta} onChange={(e) => setPagare({...pagare, tarjeta: e.target.value})}
                 />
               </div>
 
@@ -136,7 +166,8 @@ const PagoForm = ({ pago, listPagos }) => {
                   // disabled
                   // value={selectedDate || getCurrentDate()}
                   // onChange={handleDateChange}
-                  onChange={cambio}
+                  //onChange={cambio}
+                  value={pagare.fecha} onChange={(e) => setPagare({...pagare, fecha: e.target.value})}
                 />
               </div>
 
