@@ -13,11 +13,34 @@ const ReferenciaForm = () => {
   const history = useHistory();
   const params = useParams();
 
-  console.log('id:' + cookies.get('id'));
+  //console.log('id:' + cookies.get('id'));
+  
+  const clienteId = cookies.get('id');
 
   const initialState = { id: 0, personales_exists: "", crediticias_exists: "", bancarias_exists: "", laborales_exists: "", cliente_id: parseInt(cookies.get('id')) };
 
   const [referencia, setReferencia] = useState(initialState);
+
+  const listReferencias = async () => {
+    try {
+      const res = await ReferenciaServer.listReferencias();
+      const data = await res.json();
+
+      const referenciasCliente = data.referencias.filter(referencia => referencia.cliente_id === parseInt(clienteId));
+    referenciasCliente.sort((a, b) => b.id - a.id); // Ordena las referencias por el campo 'id' de forma descendente
+    setReferencia(referenciasCliente[0]); // Establece la última referencia como el estado
+
+
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+   useEffect(() => {
+    listReferencias();
+  }, []);
 
   const handleInputChange = (e) => {
     setReferencia({ ...referencia, [e.target.name]: e.target.value });
@@ -79,13 +102,31 @@ const ReferenciaForm = () => {
         await ReferenciaServer.updateReferencia(params.id, referencia);
         swal.fire("Success", "Referencia actualizado!");
       }
-      history.push("/referenciaList");
+      history.push("/refernciasList");
     } catch (error) {
       mostrarAlerta();
-      history.push("/referenciaList");
+      history.push("/refernciasList");
     }
   };
 
+  // const gey= async () => {
+  //   try {
+  //     const res = await ReferenciaServer.getReferencia;
+  //     console.log(lis)
+
+  //     const referenciasCliente = data.referencias.filter(referencias => referencias.cliente_id === parseInt(clienteId));
+  //     console.log([0]);
+  //     setReferencia(referenciasCliente[0]); //  el primer elemento de referencias
+
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+ 
+
+
+  
   return (
     <>
       <EstiloReferencia>
@@ -207,15 +248,16 @@ const ReferenciaForm = () => {
 
 export default ReferenciaForm;
 
-const EstiloReferencia = styled.body`
-#contenedor{
-  margin-top: 3rem;
-  margin-bottom: 9rem;
-  margin-left: 2rem;
-}
 
-#botones{
-  margin-top: .5rem;
-  margin-bottom: 1.5rem;
-}
-`
+const EstiloReferencia = styled.div`
+  #contenedor {
+    margin-top: 3rem;
+    margin-bottom: 9rem;
+    margin-left: 2rem;
+  }
+
+  #botones {
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+`;

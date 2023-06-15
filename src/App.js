@@ -28,8 +28,9 @@ import Perfil from './components/Paginas/Privado/Perfil';
 import RenobarForm from './components/Paginas/Servidor/Prestamos/RenobarForm';
 
 //referencias
-// import ReferenciasList from './components/Paginas/Servidor/Prestamos/ReferenciaList';
+//import ReferenciasList from './components/Paginas/Servidor/Prestamos/ReferenciaList';
 import ReferenciaForm from './components/Paginas/Servidor/Prestamos/ReferenciaForm';
+import lol from './components/Paginas/Servidor/Prestamos/ReferenciaList ';
 
 //pagos
 
@@ -110,6 +111,7 @@ function App() {
 
             <Route exact path='/prestamoFormCliente' component={PrestamoFormCliente} />
             <Route exact path='/renobarFrom' component={RenobarForm} />
+            <Route exact path='/refernciasList' component={lol} />
 
 
             {/* Pagos */}
