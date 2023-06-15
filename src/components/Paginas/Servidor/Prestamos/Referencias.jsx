@@ -1,16 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from 'universal-cookie';
-import styled from "styled-components";
+
+
+import * as ReferenciaServer from "./ReferenciaServer";
 
 // Components:
-import PrestamoItem2 from "./PrestamoItem2";
-
-import * as PrestamoServer from "./PrestamoServer";
-
 const cookies = new Cookies();
 
-const OtraPagina = () => {
+const Referencia = () => {
+  const [referecnia, setReferencia]=useState([]);
+  const clienteId = cookies.get('id');
+
+  const listReferencias = async () => {
+    try {
+      const res = await ReferenciaServer.listReferencias();
+      const data = await res.json();
+      const referenciasCliente = data.refe.filter(refe  => refe.cliente_id === parseInt(clienteId));
+      console.log(referenciasCliente);
+      setReferencia(referenciasCliente);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    listReferencias();
+  }, []);
+
   return (
     <div>
       <h1>Otra Página</h1>
@@ -22,5 +39,5 @@ const OtraPagina = () => {
   );
 };
 
-export default OtraPagina;
+export default Referencia;
 

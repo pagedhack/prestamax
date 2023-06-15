@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-
 // Components:
 import ReferenciaItem from "./ReferenciaItem";
 
@@ -29,35 +28,38 @@ const ReferenciaList = () => {
       <EstilosReferencia>
         <div id="contenedor">
           <div className="row">
-            <div style={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: '#CECECE',
-              zIndex: -1,
-            }}></div>
+            <div
+              style={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#CECECE",
+                zIndex: -1,
+              }}
+            ></div>
 
-
-            {referencias.map((referencia) => (
-              <ReferenciaItem key={referencia.id} referencia={referencia} listReferencias={listReferencias} />
-            ))}
+            {referencias.length > 0 && (
+              <ReferenciaItem
+                key={referencias[0].id}
+                referencia={referencias[0]}
+                listReferencias={listReferencias}
+              />
+            )}
           </div>
         </div>
       </EstilosReferencia>
     </>
-
   );
 };
 
 export default ReferenciaList;
 
 const EstilosReferencia = styled.body`
-
-#contenedor{
-  margin-top: 3rem;
-  margin-bottom: 5rem;
-  margin-left: 2rem;
-}
-`
+  #contenedor {
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    margin-left: 2rem;
+  }
+`;
